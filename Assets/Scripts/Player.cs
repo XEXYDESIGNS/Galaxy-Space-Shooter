@@ -6,7 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private int startPositionY = 3;
+    private int startPositionY = -3;
 
     [SerializeField]
     private float _speed = 3.5f;
@@ -21,12 +21,19 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if press right arrow on keyboard, move right
-        if(Input.GetKey(KeyCode.RightArrow))
-            //new Vector3(-5, 0, 0) * 5 * real time
-            transform.Translate(Vector3.right * _speed * Time.deltaTime);
-        //if press left arrow on keyboard, move left
-        if(Input.GetKey(KeyCode.LeftArrow))
-            transform.Translate(Vector3.left * _speed * Time.deltaTime);
+        //makes it easier to control movement on Player
+        float horizonalMovement = Input.GetAxis("Horizontal");
+        float verticalMovement = Input.GetAxis("Vertical");
+        
+        /*
+        transform.Translate(Vector3.right * horizonalMovement * _speed * Time.deltaTime);
+        transform.Translate(Vector3.up * verticalMovement *_speed * Time.deltaTime);
+        */
+        
+        //More efficient! but add a variable to clean up more
+        //transform.Translate(new Vector3(horizonalMovement, verticalMovement, 0) * _speed * Time.deltaTime);
+        
+        Vector3 direction = new Vector3(horizonalMovement, verticalMovement, 0);
+        transform.Translate(direction * _speed * Time.deltaTime);
     }
 }

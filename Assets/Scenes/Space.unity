@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPositionY: -3
-  _speed: 3.5
+  _speed: 5.5
 --- !u!1 &311903054
 GameObject:
   m_ObjectHideFlags: 0
