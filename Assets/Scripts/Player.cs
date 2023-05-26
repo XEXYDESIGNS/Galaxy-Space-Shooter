@@ -21,19 +21,34 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //makes it easier to control movement on Player
+        CalculateMovement();
+    }
+
+    void CalculateMovement()
+    {
         float horizonalMovement = Input.GetAxis("Horizontal");
         float verticalMovement = Input.GetAxis("Vertical");
         
-        /*
-        transform.Translate(Vector3.right * horizonalMovement * _speed * Time.deltaTime);
-        transform.Translate(Vector3.up * verticalMovement *_speed * Time.deltaTime);
-        */
-        
-        //More efficient! but add a variable to clean up more
-        //transform.Translate(new Vector3(horizonalMovement, verticalMovement, 0) * _speed * Time.deltaTime);
-        
+
         Vector3 direction = new Vector3(horizonalMovement, verticalMovement, 0);
         transform.Translate(direction * _speed * Time.deltaTime);
+
+        float maxHeight = 5.9f;
+        float minHeight = -3.8f;
+
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, minHeight, maxHeight), 0);
+
+
+        float maxBoundary = 11f;
+        float minBoundary = -11f;
+        
+        if (transform.position.x > maxBoundary)
+        {
+            transform.position = new Vector3(minBoundary, transform.position.y, 0);
+        }
+        else if (transform.position.x < minBoundary)
+        {
+            transform.position = new Vector3(maxBoundary, transform.position.y, 0);
+        }
     }
 }
