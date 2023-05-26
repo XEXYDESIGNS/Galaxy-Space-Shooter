@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class Laser : MonoBehaviour
 {
     [SerializeField]
-    private int _laserSpeed = 8;
+    private float _laserSpeed = 8;
     
     void Update()
     {
