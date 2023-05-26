@@ -10,18 +10,28 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private float _speed = 3.5f;
-    // Start is called before the first frame update
+
+    [SerializeField]
+    private GameObject _laserPrefab;
+    
+    [SerializeField]
+    private float _fireRate = 0.5f;
+
+    private float _nextFire = 0.0f;
+
     void Start()
     {
-        // Take the current position of the Player and set the position
-        // Set the new position to center/lower/middle of the screen
         transform.position = new Vector3(0, startPositionY, 0);
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         CalculateMovement();
+
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
+        {
+            FireLaser();
+        }
     }
 
     void CalculateMovement()
@@ -50,5 +60,14 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(maxBoundary, transform.position.y, 0);
         }
+    }
+
+    void FireLaser()
+    {
+        Vector3 _laserOffsetPosition = new Vector3(transform.position.x, transform.position.y + 0.8f, 0);
+        
+        _nextFire = Time.time + _fireRate;
+        Instantiate(_laserPrefab, _laserOffsetPosition, Quaternion.identity);
+        
     }
 }
