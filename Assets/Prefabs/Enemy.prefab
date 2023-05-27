@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b5650a90c0da6349a599551deb72672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyMovement: 4
+  _enemyMovement: 3
 --- !u!212 &106175761859248473
 SpriteRenderer:
   m_ObjectHideFlags: 0

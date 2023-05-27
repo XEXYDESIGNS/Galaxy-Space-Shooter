@@ -54,8 +54,8 @@ public class Player : MonoBehaviour
         Vector3 direction = new Vector3(horizonalMovement, verticalMovement, 0);
         transform.Translate(direction * _speed * Time.deltaTime);
 
-        float maxHeight = 5.9f;
-        float minHeight = -3.8f;
+        float maxHeight = 5.65f;
+        float minHeight = -3.75f;
 
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, minHeight, maxHeight), 0);
 
