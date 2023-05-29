@@ -5,29 +5,36 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private int startPositionY = -3;
+    [SerializeField] private int _startPositionY = -3;
 
-    [SerializeField]
-    private float _speed = 3.5f;
+    [SerializeField] private float _speed = 3.5f;
 
-    [SerializeField]
-    private GameObject _laserPrefab;
+    [SerializeField] private GameObject _laserPrefab;
+
+    [SerializeField] private GameObject _tripleShotPrefab;
     
-    [SerializeField]
-    private float _fireRate = 0.5f;
+    [SerializeField] private float _fireRate = 0.5f;
 
     private float _nextFire = 0.0f;
 
-    [SerializeField]
-    private int _lives = 3;
+    [SerializeField] private int _lives = 3;
+    
+    float maxHeight = 5.65f;
+    float minHeight = -3.75f;
+    float maxBoundary = 11f;
+    float minBoundary = -11f;
 
-    private SpawnManager _spawnManager; //find the gameobject. then get component
+    private Vector3 _laserOffsetPosition;
+    
+    [SerializeField] private bool _isTripleShotActive;
+    
+    private SpawnManager _spawnManager;
+    
     void Start()
     {
-        transform.position = new Vector3(0, startPositionY, 0);
+        transform.position = new Vector3(0, _startPositionY, 0);
         _spawnManager =
-            GameObject.Find("SpawnManager").GetComponent<SpawnManager>(); //find the object. get the component
+            GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
 
         if (_spawnManager == null)
         {
@@ -54,15 +61,8 @@ public class Player : MonoBehaviour
         Vector3 direction = new Vector3(horizonalMovement, verticalMovement, 0);
         transform.Translate(direction * _speed * Time.deltaTime);
 
-        float maxHeight = 5.65f;
-        float minHeight = -3.75f;
-
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, minHeight, maxHeight), 0);
 
-
-        float maxBoundary = 11f;
-        float minBoundary = -11f;
-        
         if (transform.position.x > maxBoundary)
         {
             transform.position = new Vector3(minBoundary, transform.position.y, 0);
@@ -75,11 +75,17 @@ public class Player : MonoBehaviour
 
     void FireLaser()
     {
-        Vector3 _laserOffsetPosition = new Vector3(transform.position.x, transform.position.y + 1.0f, 0);
-        
+        _laserOffsetPosition = new Vector3(transform.position.x, transform.position.y + 1.0f, 0);
         _nextFire = Time.time + _fireRate;
-        Instantiate(_laserPrefab, _laserOffsetPosition, Quaternion.identity);
         
+        if ((Input.GetKey(KeyCode.Space)) && _isTripleShotActive)
+        {
+            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(_laserPrefab, _laserOffsetPosition, Quaternion.identity);
+        }
     }
 
     public void Damage()
@@ -88,10 +94,20 @@ public class Player : MonoBehaviour
 
         if (_lives < 1)
         {
-            //communicate with the spawn manager
-            //let them know to stop spawning
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
         }
+    }
+
+    public void TripleShotActive()
+    {
+        _isTripleShotActive = true;
+        StartCoroutine(TripleShotPowerDownRoutine());
+    }
+
+    IEnumerator TripleShotPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _isTripleShotActive = false;
     }
 }
