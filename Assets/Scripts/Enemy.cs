@@ -8,6 +8,27 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _enemyMovement = 4f;
 
+    private Player _player;
+    
+    private Animator _animator;
+
+    private void Start()
+    {
+        _player = GameObject.Find("Player").GetComponent<Player>();
+
+        if (_player == null)
+        {
+            Debug.LogError("Player is null!");
+        }
+
+        _animator = GetComponent<Animator>();
+
+        if (_animator == null)
+        {
+            Debug.LogError("Animator is null");
+        }
+    }
+
     void Update()
     {
         transform.Translate(Vector3.down * _enemyMovement * Time.deltaTime);
@@ -21,21 +42,28 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Player player = other.transform.GetComponent<Player>();
-        
         if(other.CompareTag("Player"))
         {
-            if (player != null)
+            if (other != null)
             {
-                player.Damage();
+                other.transform.GetComponent<Player>().Damage();
             }
-            Destroy(gameObject);
+            _animator.SetTrigger("OnEnemyDeath");
+            _enemyMovement = 0;
+            Destroy(gameObject, 2.8f);
         }
         
         if (other.CompareTag("Laser"))
         {
             Destroy(other.gameObject);
-            Destroy(gameObject);
+            _animator.SetTrigger("OnEnemyDeath");
+            _enemyMovement = 0;
+            Destroy(gameObject, 2.8f);
+
+            if (_player != null)
+            {
+                _player.ChangeScore(Random.Range(4, 13));
+            }
         }
     }
 }
