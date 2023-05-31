@@ -34,16 +34,18 @@ public class Player : MonoBehaviour
 
     private Vector3 _laserOffsetPosition;
     
-    [SerializeField] private bool _isTripleShotActive;
-    [SerializeField] private bool _isSpeedActive;
-    [SerializeField] private bool _isShieldsActive;
+    private bool _isTripleShotActive;
+    private bool _isSpeedActive;
+    private bool _isShieldsActive;
 
     private SpawnManager _spawnManager;
-    [SerializeField]
     private UI_Manager _uiManager;
     
-    [SerializeField] private GameObject _rightEngine;
-    [SerializeField] private GameObject _leftEngine;
+    private GameObject _rightEngine;
+    private GameObject _leftEngine;
+    
+    private AudioSource _laserShot;
+    [SerializeField] private AudioSource _explosionSound;
     
     
     void Start()
@@ -65,6 +67,20 @@ public class Player : MonoBehaviour
         if (_spawnManager == null)
         {
             Debug.LogError("The Spawn Manager is null.");
+        }
+        
+        _laserShot = GameObject.Find("Laser_Sound").GetComponent<AudioSource>();
+
+        if (_laserShot == null)
+        {
+            Debug.LogError("Laser Audio Source is null");
+        }
+
+        _explosionSound = GameObject.Find("Explosion_Sound").GetComponent<AudioSource>();
+
+        if (_explosionSound == null)
+        {
+            Debug.LogError("Explosion Audio Source is null");
         }
     }
     
@@ -112,6 +128,8 @@ public class Player : MonoBehaviour
         {
             Instantiate(_laserPrefab, _laserOffsetPosition, Quaternion.identity);
         }
+        
+        _laserShot.Play();
     }
 
     public void Damage()
@@ -140,6 +158,7 @@ public class Player : MonoBehaviour
         {
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
+            _explosionSound.Play();
         }
     }
 

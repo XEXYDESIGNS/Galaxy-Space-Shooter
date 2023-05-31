@@ -14,6 +14,19 @@ public class Powerup : MonoBehaviour
 
     [SerializeField]
     private int powerupID;
+
+    [SerializeField] private AudioSource _powerupSound;
+
+    private void Start()
+    {
+        _powerupSound = GameObject.Find("Powerup_Sound").GetComponent<AudioSource>();
+
+        if (_powerupSound == null)
+        {
+            Debug.LogError("Powerup Audio Source is null");
+        }
+    }
+
     void Update()
     {
         transform.Translate(Vector3.down * _powerupSpeed * Time.deltaTime);
@@ -47,6 +60,7 @@ public class Powerup : MonoBehaviour
                             Debug.Log("Default value");
                             break;
                 }
+                _powerupSound.Play();
             }
             Destroy(gameObject);
         }

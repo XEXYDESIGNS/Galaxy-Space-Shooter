@@ -136,3 +136,5 @@ MonoBehaviour:
   _speed: 20.75
   _explosionPrefab: {fileID: 4120305334725297963, guid: a3e70598a599c6f4290313052d5edefe,
     type: 3}
+  _spawnManager: {fileID: 0}
+  _explosionSound: {fileID: 0}

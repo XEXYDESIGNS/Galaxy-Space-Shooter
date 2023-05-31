@@ -136,6 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _powerupSpeed: 3
   powerupID: 1
+  _powerupSound: {fileID: 0}
 --- !u!95 &1264820633
 Animator:
   serializedVersion: 3

@@ -155,3 +155,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _powerupSpeed: 3
   powerupID: 2
+  _powerupSound: {fileID: 0}

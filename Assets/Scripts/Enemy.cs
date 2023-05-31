@@ -12,6 +12,9 @@ public class Enemy : MonoBehaviour
     
     private Animator _animator;
 
+    [SerializeField] private AudioSource _explosionSound;
+    [SerializeField] private GameObject _enemyLasersPrefab;
+
     private void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -27,6 +30,15 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("Animator is null");
         }
+
+        _explosionSound = GameObject.Find("Explosion_Sound").GetComponent<AudioSource>();
+
+        if (_explosionSound == null)
+        {
+            Debug.LogError("Explosion Audio Source is Null");
+        }
+
+        StartCoroutine(RandomFiringTime());
     }
 
     void Update()
@@ -51,6 +63,7 @@ public class Enemy : MonoBehaviour
             _animator.SetTrigger("OnEnemyDeath");
             _enemyMovement = 0;
             Destroy(gameObject, 2.8f);
+            _explosionSound.Play();
         }
         
         if (other.CompareTag("Laser"))
@@ -58,12 +71,23 @@ public class Enemy : MonoBehaviour
             Destroy(other.gameObject);
             _animator.SetTrigger("OnEnemyDeath");
             _enemyMovement = 0;
+            Destroy(GetComponent<Collider2D>());
             Destroy(gameObject, 2.8f);
+            _explosionSound.Play();
 
             if (_player != null)
             {
                 _player.ChangeScore(Random.Range(4, 13));
             }
+        }
+    }
+
+    IEnumerator RandomFiringTime()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(2.0f, 6.0f));
+            Instantiate(_enemyLasersPrefab, transform.position, Quaternion.identity);
         }
     }
 }
