@@ -20,10 +20,7 @@
       <Path>.idea</Path>
       <Path>Library</Path>
       <Path>Logs</Path>
-      <Path>Screenshots</Path>
       <Path>Temp</Path>
-      <Path>WebGL_Demo</Path>
-      <Path>Windows_Playable_Build</Path>
       <Path>obj</Path>
     </explicitExcludes>
   </component>
