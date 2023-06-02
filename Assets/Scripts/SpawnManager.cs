@@ -9,13 +9,7 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField] private GameObject[] _powerups;
 
-
     private bool _stopSpawning = false;
-    
-    void Start()
-    {
-        
-    }
     
     IEnumerator SpawnEnemyRoutine()
     {
@@ -41,7 +35,32 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(2, 8));
         }
     }
-    
+
+    public void ReloadPowerup()
+    {
+        StartCoroutine(ReloadPowerupRoutine());
+    }
+
+    IEnumerator ReloadPowerupRoutine()
+    {
+        yield return new WaitForSeconds(7.0f);
+        Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
+        Instantiate(_powerups[3], spawnPosition, Quaternion.identity);
+        yield return new WaitForSeconds(7.0f);
+    }
+
+    public void SpawnHealthPowerup()
+    {
+        StartCoroutine(SpawnHealthPowerupRoutine());
+    }
+
+    IEnumerator SpawnHealthPowerupRoutine()
+    {
+        yield return new WaitForSeconds(7.0f);
+        Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
+        Instantiate(_powerups[4], spawnPosition, Quaternion.identity);
+        yield return new WaitForSeconds(7.0f);
+    }
     
     public void OnPlayerDeath()
     {
