@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _ammoPrefab;
     [SerializeField] private GameObject _healthPrefab;
     [SerializeField] private int _shieldHits = 3;
+    [SerializeField] private GameObject _missile;
+    [SerializeField] private GameObject _missileThrusters;
 
     [SerializeField] private GameObject _visualShields;
 
@@ -41,6 +43,7 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isTripleShotActive;
     [SerializeField] private bool _isSpeedActive;
     [SerializeField] private bool _isShieldsActive;
+    [SerializeField] private bool _isMissileActive;
 
     [SerializeField] private SpawnManager _spawnManager;
     [SerializeField] private UI_Manager _uiManager;
@@ -142,9 +145,8 @@ public class Player : MonoBehaviour
         {
             _uiManager.ReloadingAmmo(true);
             _spawnManager.ReloadPowerup();
-            return;
         }
-        
+        if(_isMissileActive == true)
         if ((Input.GetKey(KeyCode.Space)) && _isTripleShotActive && _ammoCount > 0)
         {
                 UpdateAmmoCount(1);
@@ -157,9 +159,6 @@ public class Player : MonoBehaviour
                 Instantiate(_laserPrefab, _laserOffsetPosition, Quaternion.identity);
                 _laserShot.Play();
         }
-        
-
-
     }
 
     public void Damage()
@@ -250,5 +249,11 @@ public class Player : MonoBehaviour
     {
         _lives += 1;
         _uiManager.UpdateLives(_lives);
+    }
+
+    public void MissileActive()
+    {
+        _missile.SetActive(true);
+        _isMissileActive = true;
     }
 }

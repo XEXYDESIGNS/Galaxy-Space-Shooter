@@ -52,18 +52,18 @@ public class UI_Manager : MonoBehaviour
     public void UpdateLives(int currentLives)
     {
         _livesImage.sprite = _liveSprites[currentLives];
+        
+        if (currentLives == 3)
+        {
+            _rightFire.SetActive(false);
+            _leftFire.SetActive(false);
+        }
         if (currentLives < 3)
         {
             {
                 _spawnManager.SpawnHealthPowerup();
             }
-
-            if (currentLives == 3)
-            {
-                _rightFire.SetActive(false);
-                _leftFire.SetActive(false);
-            }
-            else if (currentLives == 2)
+            if (currentLives == 2)
             {
                 _rightFire.SetActive(true);
                 _leftFire.SetActive(false);

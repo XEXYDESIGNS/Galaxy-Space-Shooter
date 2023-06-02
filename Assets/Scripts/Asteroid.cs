@@ -14,7 +14,7 @@ public class Asteroid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
 
         if (_spawnManager == null)
         {
