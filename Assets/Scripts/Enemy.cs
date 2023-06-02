@@ -80,6 +80,20 @@ public class Enemy : MonoBehaviour
                 _player.ChangeScore(Random.Range(4, 13));
             }
         }
+
+        if (other.CompareTag("Missile"))
+        {
+            Destroy(other.gameObject);
+            _animator.SetTrigger("OnEnemyDeath");
+            _enemyMovement = 0;
+            Destroy(GetComponent<Collider2D>());
+            Destroy(gameObject, 2.8f);
+            _explosionSound.Play();
+            if (_player != null)
+            {
+                _player.ChangeScore(100);
+            }
+        }
     }
 
     IEnumerator RandomFiringTime()

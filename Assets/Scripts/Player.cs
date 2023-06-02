@@ -18,8 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _ammoPrefab;
     [SerializeField] private GameObject _healthPrefab;
     [SerializeField] private int _shieldHits = 3;
-    [SerializeField] private GameObject _missile;
-    [SerializeField] private GameObject _missileThrusters;
+    [SerializeField] private GameObject _misslePrefab;
 
     [SerializeField] private GameObject _visualShields;
 
@@ -39,6 +38,7 @@ public class Player : MonoBehaviour
     float minBoundary = -11f;
 
     private Vector3 _laserOffsetPosition;
+    private Vector3 _missileOffsetPosition;
 
     [SerializeField] private bool _isTripleShotActive;
     [SerializeField] private bool _isSpeedActive;
@@ -97,9 +97,16 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
+        if (_isMissileActive == false)
         {
-            FireLaser();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                FireLaser();
+            }
+        }
+        else if (_isMissileActive == true)
+        {
+            LaunchMissile();
         }
     }
 
@@ -140,14 +147,19 @@ public class Player : MonoBehaviour
     {
         _laserOffsetPosition = new Vector3(transform.position.x, transform.position.y + 1.0f, 0);
         _nextFire = Time.time + _fireRate;
-
+        
         if (_ammoCount == 0)
         {
             _uiManager.ReloadingAmmo(true);
             _spawnManager.ReloadPowerup();
+            return;
         }
-        if(_isMissileActive == true)
-        if ((Input.GetKey(KeyCode.Space)) && _isTripleShotActive && _ammoCount > 0)
+        
+        if (_isMissileActive == true)
+        {
+            
+        }
+        if ((Input.GetKey(KeyCode.Space)) && _isTripleShotActive)
         {
                 UpdateAmmoCount(1);
                 Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
@@ -253,7 +265,18 @@ public class Player : MonoBehaviour
 
     public void MissileActive()
     {
-        _missile.SetActive(true);
         _isMissileActive = true;
+        _uiManager.MissileProgram(true);
+    }
+
+    public void LaunchMissile()
+    {
+        _missileOffsetPosition = new Vector3(transform.position.x, transform.position.y + 1.16f, 0);
+        if (Input.GetKey(KeyCode.M))
+        {
+            _uiManager.MissileProgram(false);
+            _isMissileActive = false;
+            Instantiate(_misslePrefab, _missileOffsetPosition, Quaternion.identity);
+        }
     }
 }

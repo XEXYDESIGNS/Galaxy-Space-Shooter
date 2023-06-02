@@ -33,8 +33,6 @@ public class SpawnManager : MonoBehaviour
             int randomPowerup = Random.Range(0, 3);
             Instantiate(_powerups[randomPowerup], spawnPosition, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(2, 8));
-            
-            
         }
     }
 
@@ -45,9 +43,12 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator ReloadPowerupRoutine()
     {
-        Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
-        Instantiate(_powerups[3], spawnPosition, Quaternion.identity);
-        yield return new WaitForSeconds(7.0f);
+        while (true)
+        {
+            yield return new WaitForSeconds(7.0f);
+            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
+            Instantiate(_powerups[3], spawnPosition, Quaternion.identity);
+        }
     }
 
     public void SpawnHealthPowerup()
@@ -57,17 +58,19 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnHealthPowerupRoutine()
     {
-        yield return new WaitForSeconds(7.0f);
-        Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
-        Instantiate(_powerups[4], spawnPosition, Quaternion.identity);
-        yield return new WaitForSeconds(7.0f);
+        while (true)
+        {
+            yield return new WaitForSeconds(7.0f);
+            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
+            Instantiate(_powerups[4], spawnPosition, Quaternion.identity);
+        }
     }
 
     IEnumerator SpawnRarePowerupRoutine()
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(30.0f, 45.0f));
+            yield return new WaitForSeconds(Random.Range(35.0f, 45.0f));
             Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
             Instantiate(_powerups[5], spawnPosition, Quaternion.identity);
         }

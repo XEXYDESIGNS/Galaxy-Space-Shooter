@@ -13,6 +13,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private GameManager _gameManager;
     [SerializeField] private Text _ammoCountDisplay;
     [SerializeField] private Text _restartAmmoCount;
+    [SerializeField] private Text _missileText;
     [SerializeField] private GameObject _rightFire;
     [SerializeField] private GameObject _leftFire;
     [SerializeField] private SpawnManager _spawnManager;
@@ -24,6 +25,7 @@ public class UI_Manager : MonoBehaviour
         _ammoCountDisplay.text = "Ammo Count -- " + 15;
         _gameOverText.gameObject.SetActive(false);
         _restartAmmoCount.gameObject.SetActive(false);
+        _missileText.gameObject.SetActive(false);
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
 
         if (_gameManager == null)
@@ -47,6 +49,11 @@ public class UI_Manager : MonoBehaviour
     public void NewAmmoCount(int count)
     {
         _ammoCountDisplay.text = "Ammo Count -- " + count;
+    }
+
+    public void MissileProgram(bool active)
+    {
+        _missileText.gameObject.SetActive(active);
     }
 
     public void UpdateLives(int currentLives)
@@ -89,7 +96,7 @@ public class UI_Manager : MonoBehaviour
             StartCoroutine(GameOverFlicker());
         }
 
-        IEnumerator GameOverFlicker()
+    IEnumerator GameOverFlicker()
         {
             while (true)
             {
@@ -100,7 +107,7 @@ public class UI_Manager : MonoBehaviour
             }
         }
 
-        public void ReloadingAmmo(bool _display)
+    public void ReloadingAmmo(bool _display)
         {
             _restartAmmoCount.gameObject.SetActive(_display);
         }
