@@ -22,6 +22,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] private GameObject _visualShields;
     [SerializeField] private Camera _mainCamera;
+    [SerializeField] private Transform _cameraTransform;
+
+    [SerializeField] private Vector3 _originalPosition;
 
     [SerializeField] private Slider _thrusterChargeSlider;
 
@@ -63,6 +66,13 @@ public class Player : MonoBehaviour
     
     void Start()
     {
+        if (_cameraTransform == null)
+        {
+            Debug.LogError("Camera transform is null");
+        }
+
+        _originalPosition = _cameraTransform.localPosition;
+        
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
 
         if (_uiManager == null)
@@ -328,20 +338,18 @@ public class Player : MonoBehaviour
 
     IEnumerator CameraShakeRoutine()
     {
-        float _cameraMovement = 0.25f;
-        yield return new WaitForSeconds(0.1f);
-        _mainCamera.transform.position.x = new Transform(-_cameraMovement, transform.position.y, transform.position.z);
         yield return new WaitForSeconds(0.1f);
         _mainCamera.transform.Translate(transform.position.x + 0.5f, transform.position.y, transform.position.z);
+        yield return new WaitForSeconds(0.1f);
+        _mainCamera.transform.localPosition = _originalPosition;
         yield return new WaitForSeconds(0.1f);
         _mainCamera.transform.Translate(transform.position.x - 0.5f, transform.position.y, transform.position.z);
         yield return new WaitForSeconds(0.1f);
-        _mainCamera.transform.Translate(transform.position.x + 0.5f, transform.position.y, transform.position.z);
+        _mainCamera.transform.localPosition = _originalPosition;
         yield return new WaitForSeconds(0.1f);
         _mainCamera.transform.Translate(transform.position.x - 0.5f, transform.position.y, transform.position.z);
         yield return new WaitForSeconds(0.1f);
-        _mainCamera.transform.Translate(transform.position.x + 0.5f, transform.position.y, transform.position.z);
+        _mainCamera.transform.localPosition = _originalPosition;
         yield return new WaitForSeconds(0.1f);
-        _mainCamera.transform.Translate(0, 0, transform.position.z);
     }
 }

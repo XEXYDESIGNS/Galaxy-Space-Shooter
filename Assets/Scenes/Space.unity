@@ -1560,6 +1560,8 @@ MonoBehaviour:
     type: 3}
   _visualShields: {fileID: 1484590751}
   _mainCamera: {fileID: 311903056}
+  _cameraTransform: {fileID: 311903057}
+  _originalPosition: {x: 0, y: 0, z: 0}
   _thrusterChargeSlider: {fileID: 1740307450}
   _ammoCount: 15
   _lives: 3
