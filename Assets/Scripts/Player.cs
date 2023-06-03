@@ -21,6 +21,9 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _misslePrefab;
 
     [SerializeField] private GameObject _visualShields;
+    [SerializeField] private Camera _mainCamera;
+
+    [SerializeField] private Slider _thrusterChargeSlider;
 
     private float _fireRate = 0.5f;
 
@@ -32,10 +35,13 @@ public class Player : MonoBehaviour
 
     [SerializeField] private int _score = 0;
 
-    float maxHeight = 5.65f;
-    float minHeight = -3.75f;
-    float maxBoundary = 11f;
-    float minBoundary = -11f;
+    float _maxHeight = 5.65f;
+    float _minHeight = -3.75f;
+    float _maxBoundary = 11f;
+    float _minBoundary = -11f;
+
+    [SerializeField] private float _thrusterCount;
+    [SerializeField] private GameObject _thrustersVisual;
 
     private Vector3 _laserOffsetPosition;
     private Vector3 _missileOffsetPosition;
@@ -95,7 +101,15 @@ public class Player : MonoBehaviour
     
     void Update()
     {
-        CalculateMovement();
+        if (_thrusterCount < 1)
+        {
+            CalculateMovement();
+        }
+        else
+        {
+            _thrustersVisual.SetActive(false);
+            StartCoroutine(MaxThrusterCountCoolDown());
+        }
 
         if (_isMissileActive == false)
         {
@@ -116,7 +130,7 @@ public class Player : MonoBehaviour
         float verticalMovement = Input.GetAxis("Vertical");
 
         float leftArrowSpeed = 3.0f;
-
+        
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             _speed = _speed + leftArrowSpeed;
@@ -131,15 +145,32 @@ public class Player : MonoBehaviour
             transform.Translate(direction * _speed * Time.deltaTime);
         }
 
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, minHeight, maxHeight), 0);
-
-        if (transform.position.x > maxBoundary)
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            transform.position = new Vector3(minBoundary, transform.position.y, 0);
+            MoveThrusterSlider();
         }
-        else if (transform.position.x < minBoundary)
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            transform.position = new Vector3(maxBoundary, transform.position.y, 0);
+            MoveThrusterSlider();
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            MoveThrusterSlider();
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            MoveThrusterSlider();
+        }
+
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, _minHeight, _maxHeight), 0);
+
+        if (transform.position.x > _maxBoundary)
+        {
+            transform.position = new Vector3(_minBoundary, transform.position.y, 0);
+        }
+        else if (transform.position.x < _minBoundary)
+        {
+            transform.position = new Vector3(_maxBoundary, transform.position.y, 0);
         }
     }
 
@@ -175,6 +206,7 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
+        StartCoroutine(CameraShakeRoutine());
         if (_isShieldsActive == false)
         {
             _lives--;
@@ -278,5 +310,38 @@ public class Player : MonoBehaviour
             _isMissileActive = false;
             Instantiate(_misslePrefab, _missileOffsetPosition, Quaternion.identity);
         }
+    }
+
+    public void MoveThrusterSlider()
+    {
+        _thrusterCount += 0.05f;
+        _uiManager.ChangeThrusterSlider(_thrusterCount);
+    }
+
+    IEnumerator MaxThrusterCountCoolDown()
+    {
+        yield return new WaitForSeconds(3.5f);
+        _thrusterChargeSlider.value = 0;
+        _thrusterCount = 0;
+        _thrustersVisual.SetActive(true);
+    }
+
+    IEnumerator CameraShakeRoutine()
+    {
+        float _cameraMovement = 0.25f;
+        yield return new WaitForSeconds(0.1f);
+        _mainCamera.transform.position.x = new Transform(-_cameraMovement, transform.position.y, transform.position.z);
+        yield return new WaitForSeconds(0.1f);
+        _mainCamera.transform.Translate(transform.position.x + 0.5f, transform.position.y, transform.position.z);
+        yield return new WaitForSeconds(0.1f);
+        _mainCamera.transform.Translate(transform.position.x - 0.5f, transform.position.y, transform.position.z);
+        yield return new WaitForSeconds(0.1f);
+        _mainCamera.transform.Translate(transform.position.x + 0.5f, transform.position.y, transform.position.z);
+        yield return new WaitForSeconds(0.1f);
+        _mainCamera.transform.Translate(transform.position.x - 0.5f, transform.position.y, transform.position.z);
+        yield return new WaitForSeconds(0.1f);
+        _mainCamera.transform.Translate(transform.position.x + 0.5f, transform.position.y, transform.position.z);
+        yield return new WaitForSeconds(0.1f);
+        _mainCamera.transform.Translate(0, 0, transform.position.z);
     }
 }

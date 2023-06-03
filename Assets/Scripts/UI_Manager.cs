@@ -17,6 +17,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private GameObject _rightFire;
     [SerializeField] private GameObject _leftFire;
     [SerializeField] private SpawnManager _spawnManager;
+    [SerializeField] private Slider _thrusterSlider;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,7 @@ public class UI_Manager : MonoBehaviour
         _gameOverText.gameObject.SetActive(false);
         _restartAmmoCount.gameObject.SetActive(false);
         _missileText.gameObject.SetActive(false);
+        _thrusterSlider.interactable = !_thrusterSlider.interactable;
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
 
         if (_gameManager == null)
@@ -111,4 +113,9 @@ public class UI_Manager : MonoBehaviour
         {
             _restartAmmoCount.gameObject.SetActive(_display);
         }
+
+    public void ChangeThrusterSlider(float num)
+    {
+        _thrusterSlider.value = num;
     }
+}
