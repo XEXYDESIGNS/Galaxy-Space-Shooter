@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _enemyMovement = 4f;
+    private float _randomPos = Random.Range(-8f, 8f);
 
     private Player _player;
     
@@ -14,6 +15,9 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private AudioSource _explosionSound;
     [SerializeField] private GameObject _enemyLasersPrefab;
+    
+    private Vector3[] _randomPosition;
+    
 
     private void Start()
     {
@@ -43,13 +47,8 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector3.down * _enemyMovement * Time.deltaTime);
-
-        if (transform.position.y < -4f)
-        {
-            float randomX = Random.Range(-8f, 8f);
-            transform.position = new Vector3(randomX, 6f, 0);
-        }
+        StartCoroutine(EnemyMovementRoutine());
+        Boundaries();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -100,8 +99,44 @@ public class Enemy : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(2.0f, 6.0f));
+            yield return new WaitForSeconds(Random.Range(2.0f, 4.0f));
             Instantiate(_enemyLasersPrefab, transform.position, Quaternion.identity);
         }
+    }
+
+    private void Boundaries()
+    {
+        if (transform.position.x > 8f)
+        {
+            transform.position = new Vector3(transform.position.x * (-1f), transform.position.y, 0);
+        }
+
+        if (transform.position.x < -8f)
+        {
+            transform.position = new Vector3(transform.position.x * (-1f), transform.position.y, 0);
+        }
+        if (transform.position.y < -4f)
+        {
+            transform.position = new Vector3(_randomPos, 6f, 0);
+        }
+    }
+
+    IEnumerator EnemyMovementRoutine()
+    {
+        transform.Translate(Vector3.left * _enemyMovement * Time.deltaTime);
+        yield return new WaitForSeconds(1.5f);
+        transform.Translate(Vector3.down * _enemyMovement * Time.deltaTime);
+        yield return new WaitForSeconds(1.0f);
+        transform.Translate(Vector3.left * _enemyMovement * Time.deltaTime);
+        yield return new WaitForSeconds(5.0f);
+        transform.Translate(Vector3.down * _enemyMovement * Time.deltaTime);
+        yield return new WaitForSeconds(1.5f);
+        transform.Translate(Vector3.right * _enemyMovement * Time.deltaTime);
+        yield return new WaitForSeconds(1.0f);
+        transform.Translate(Vector3.down * _enemyMovement * Time.deltaTime);
+        yield return new WaitForSeconds(3.0f);
+        transform.Translate(Vector3.left * _enemyMovement * Time.deltaTime);
+        yield return new WaitForSeconds(5.0f);
+        transform.Translate(Vector3.down * _enemyMovement * Time.deltaTime);
     }
 }
