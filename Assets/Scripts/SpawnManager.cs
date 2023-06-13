@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -8,9 +10,10 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject _enemyContainer;
 
     [SerializeField] private GameObject[] _powerups;
+    [SerializeField] private bool _isReloadAmmoActive;
 
     private bool _stopSpawning = false;
-    
+
     IEnumerator SpawnEnemyRoutine()
     {
         yield return new WaitForSeconds(1.5f);
@@ -43,9 +46,10 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator ReloadPowerupRoutine()
     {
-        while (true)
+        while (!_isReloadAmmoActive)
         {
-            yield return new WaitForSeconds(7.0f);
+            _isReloadAmmoActive = true;
+            yield return new WaitForSeconds(3.0f);
             Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
             Instantiate(_powerups[3], spawnPosition, Quaternion.identity);
         }

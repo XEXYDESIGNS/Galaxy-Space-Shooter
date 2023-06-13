@@ -18,12 +18,13 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private GameObject _leftFire;
     [SerializeField] private SpawnManager _spawnManager;
     [SerializeField] private Slider _thrusterSlider;
+    [SerializeField] private int _maxAmmoCount = 15;
 
     // Start is called before the first frame update
     void Start()
     {
         _scoreText.text = "Score: " + 0;
-        _ammoCountDisplay.text = "Ammo Count -- " + 15;
+        _ammoCountDisplay.text = "Ammo Count -- " + 15 + "/" + _maxAmmoCount;
         _gameOverText.gameObject.SetActive(false);
         _restartAmmoCount.gameObject.SetActive(false);
         _missileText.gameObject.SetActive(false);
@@ -50,7 +51,7 @@ public class UI_Manager : MonoBehaviour
 
     public void NewAmmoCount(int count)
     {
-        _ammoCountDisplay.text = "Ammo Count -- " + count;
+        _ammoCountDisplay.text = "Ammo Count -- " + count + "/" + _maxAmmoCount;
     }
 
     public void MissileProgram(bool active)
