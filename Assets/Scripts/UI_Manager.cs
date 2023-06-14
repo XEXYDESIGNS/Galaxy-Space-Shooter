@@ -19,10 +19,14 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private SpawnManager _spawnManager;
     [SerializeField] private Slider _thrusterSlider;
     [SerializeField] private int _maxAmmoCount = 15;
+    [SerializeField] private Text _enemyWaveNumberText;
+    [SerializeField] private Text _enemyWaveCountText;
 
     // Start is called before the first frame update
     void Start()
     {
+        _enemyWaveNumberText.text = "Wave# : ";
+        _enemyWaveCountText.text = "Enemies: ";
         _scoreText.text = "Score: " + 0;
         _ammoCountDisplay.text = "Ammo Count -- " + 15 + "/" + _maxAmmoCount;
         _gameOverText.gameObject.SetActive(false);
@@ -118,5 +122,15 @@ public class UI_Manager : MonoBehaviour
     public void ChangeThrusterSlider(float num)
     {
         _thrusterSlider.value = num;
+    }
+
+    public void UpdateWave(int waveNumber)
+    {
+        _enemyWaveNumberText.text = "Wave# : " + waveNumber;
+    }
+    
+    public void UpdateEnemyWave(int enemyCount, int totalEnemies)
+    {
+        _enemyWaveCountText.text = "Enemies: " + (totalEnemies - enemyCount) + "/" + totalEnemies;
     }
 }

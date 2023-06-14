@@ -14,15 +14,51 @@ public class SpawnManager : MonoBehaviour
 
     private bool _stopSpawning = false;
 
-    IEnumerator SpawnEnemyRoutine()
+    [SerializeField] private int _enemyWaveCount;
+    [SerializeField] private UI_Manager _uiManager;
+
+
+    private void Start()
+    {
+        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
+
+        if (_uiManager == null)
+        {
+            Debug.LogError("The UI_Manager is null.");
+        }
+    }
+
+    IEnumerator SpawnEnemyRoutineWave1()
     {
         yield return new WaitForSeconds(1.5f);
-        while (_stopSpawning == false)
+        while (_enemyWaveCount < 5)
         {
+            _enemyWaveCount += 1;
             Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
             GameObject newEnemy = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
+            _uiManager.UpdateEnemyWave(_enemyWaveCount, 5);
+            _uiManager.UpdateWave(1);
+            if (_enemyWaveCount > 4)
+            {
+                yield return StartCoroutine(SpawnEnemyRoutineWave2());
+            }
             yield return new WaitForSeconds(5.0f);
+        }
+    }
+
+    IEnumerator SpawnEnemyRoutineWave2()
+    {
+        yield return new WaitForSeconds(1.5f);
+        while (_enemyWaveCount > 4 && _enemyWaveCount < 15)
+        {
+            _enemyWaveCount += 1;
+            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
+            GameObject newEnemy = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
+            newEnemy.transform.parent = _enemyContainer.transform;
+            _uiManager.UpdateEnemyWave(_enemyWaveCount - 5, 10);
+            _uiManager.UpdateWave(2);
+            yield return new WaitForSeconds(4.0f);
         }
     }
 
@@ -87,7 +123,7 @@ public class SpawnManager : MonoBehaviour
 
     public void StartSpawning()
     {
-        StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnEnemyRoutineWave1());
         StartCoroutine(SpawnPowerupRoutine());
         StartCoroutine(SpawnRarePowerupRoutine());
     }
