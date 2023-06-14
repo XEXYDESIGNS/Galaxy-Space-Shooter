@@ -13,6 +13,8 @@ public class Powerup : MonoBehaviour
     //2 - shields
     //3 - ammo
     //4 - health
+    //5 - missile
+    //6 - death
 
     [SerializeField]
     private int powerupID;
@@ -66,6 +68,9 @@ public class Powerup : MonoBehaviour
                             break;
                         case 5:
                             player.MissileActive();
+                            break;
+                        case 6:
+                            player.DeathPowerup();
                             break;
                         default:
                             Debug.Log("Default value");

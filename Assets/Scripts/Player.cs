@@ -311,6 +311,12 @@ public class Player : MonoBehaviour
         _uiManager.MissileProgram(true);
     }
 
+    public void DeathPowerup()
+    {
+        _lives -= 1;
+        _uiManager.UpdateLives(_lives);
+    }
+
     public void LaunchMissile()
     {
         _missileOffsetPosition = new Vector3(transform.position.x, transform.position.y + 1.16f, 0);

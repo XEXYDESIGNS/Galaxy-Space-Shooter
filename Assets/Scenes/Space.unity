@@ -1871,6 +1871,7 @@ MonoBehaviour:
   - {fileID: 6549250867756268038, guid: 4a934b76ed2f7434d8012e74f7a1d639, type: 3}
   - {fileID: 5523464628946909506, guid: f19ccf2103010b645b588284e6eda6a9, type: 3}
   - {fileID: 3106604400838773696, guid: 9309d5135ffb49644a1fb92e3172b9fe, type: 3}
+  - {fileID: 6175017184620856674, guid: a76a256252bee69409e6bae6a6086bad, type: 3}
   _isReloadAmmoActive: 0
   _enemyWaveCount: 0
   _uiManager: {fileID: 54423983}

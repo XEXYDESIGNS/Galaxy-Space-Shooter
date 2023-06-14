@@ -116,6 +116,16 @@ public class SpawnManager : MonoBehaviour
         }
     }
     
+    IEnumerator SpawnDeathPowerupRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(7.0f);
+            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
+            Instantiate(_powerups[6], spawnPosition, Quaternion.identity);
+        }
+    }
+    
     public void OnPlayerDeath()
     {
         _stopSpawning = true;
@@ -126,5 +136,6 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnEnemyRoutineWave1());
         StartCoroutine(SpawnPowerupRoutine());
         StartCoroutine(SpawnRarePowerupRoutine());
+        StartCoroutine(SpawnDeathPowerupRoutine());
     }
 }
