@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Enemy : MonoBehaviour
+public class EnemyBeam : MonoBehaviour
 {
     [SerializeField] private float _enemyMovement = 4f;
     private float _randomPos;
@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
     private Animator _animator;
 
     [SerializeField] private AudioSource _explosionSound;
-    [SerializeField] private GameObject _enemyLasersPrefab;
+    [SerializeField] private GameObject _enemyBeamPrefab;
 
     private void Start()
     {
@@ -42,13 +42,10 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("Explosion Audio Source is Null");
         }
-
-        StartCoroutine(RandomFiringTime());
     }
 
     void Update()
     {
-        StartCoroutine(EnemyMovementRoutine());
         Boundaries();
     }
 
@@ -97,15 +94,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    IEnumerator RandomFiringTime()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
-            Instantiate(_enemyLasersPrefab, transform.position, Quaternion.identity);
-        }
-    }
-
     private void Boundaries()
     {
         if (transform.position.x > 8f)
@@ -117,28 +105,10 @@ public class Enemy : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x * (-1f), transform.position.y, 0);
         }
+        
         if (transform.position.y < -4f)
         {
             transform.position = new Vector3(_randomPos, 6f, 0);
         }
-    }
-
-    IEnumerator EnemyMovementRoutine()
-    {
-        transform.Translate(Vector3.left * _enemyMovement * Time.deltaTime);
-        yield return new WaitForSeconds(1.5f);
-        transform.Translate(Vector3.down * _enemyMovement * Time.deltaTime);
-        yield return new WaitForSeconds(1.0f);
-        transform.Translate(Vector3.left * _enemyMovement * Time.deltaTime);
-        yield return new WaitForSeconds(5.0f);
-        transform.Translate(Vector3.down * _enemyMovement * Time.deltaTime);
-        yield return new WaitForSeconds(1.5f);
-        transform.Translate(Vector3.right * _enemyMovement * Time.deltaTime);
-        yield return new WaitForSeconds(1.0f);
-        transform.Translate(Vector3.down * _enemyMovement * Time.deltaTime);
-        yield return new WaitForSeconds(3.0f);
-        transform.Translate(Vector3.left * _enemyMovement * Time.deltaTime);
-        yield return new WaitForSeconds(5.0f);
-        transform.Translate(Vector3.down * _enemyMovement * Time.deltaTime);
     }
 }

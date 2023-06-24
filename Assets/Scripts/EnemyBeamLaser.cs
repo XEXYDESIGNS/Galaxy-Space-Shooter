@@ -17,9 +17,7 @@ public class EnemyBeamLaser : MonoBehaviour
         {
             Debug.LogError("Explosion Audio Source is Null");
         }
-        
-        _enemyLaserBeam.SetActive(false);
-        
+
         StartCoroutine(InitiateLaserBeamRoutine());
     }
 
@@ -53,12 +51,14 @@ public class EnemyBeamLaser : MonoBehaviour
 
     IEnumerator InitiateLaserBeamRoutine()
     {
-        yield return new WaitForSeconds(3.0f);
-        _enemyLaserBeam.SetActive(true);
-        _beamSound.Play();
-        yield return new WaitForSeconds(1.0f);
-        _enemyLaserBeam.SetActive(false);
-        yield return new WaitForSeconds(7.0f);
-        
+        while (true)
+        {
+            yield return new WaitForSeconds(3.0f);
+            _enemyLaserBeam.SetActive(true);
+            _beamSound.Play();
+            yield return new WaitForSeconds(1.0f);
+            _enemyLaserBeam.SetActive(false);
+            yield return new WaitForSeconds(7.0f);
+        }
     }
 }

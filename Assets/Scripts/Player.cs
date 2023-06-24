@@ -8,8 +8,8 @@ public class Player : MonoBehaviour
 {
     private int _startPositionY = -3;
 
-    private float _speed = 3.5f;
-    private float _newSpeed = 3f;
+    [SerializeField] private float _speed = 3.5f;
+    [SerializeField] private float _newSpeed = 3f;
 
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private GameObject _tripleShotPrefab;
@@ -108,6 +108,7 @@ public class Player : MonoBehaviour
         }
 
         _ammoCount = 15;
+        _isSpeedActive = false;
     }
     
     void Update()
@@ -272,7 +273,7 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5.0f);
         _isSpeedActive = false;
-        _speed = _speed - _newSpeed;
+        _speed -= _newSpeed;
     }
 
     public void ShieldPowerupActive()
