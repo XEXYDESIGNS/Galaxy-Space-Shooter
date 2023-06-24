@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isSpeedActive;
     [SerializeField] private bool _isShieldsActive;
     [SerializeField] private bool _isMissileActive;
+    [SerializeField] private bool _hasReloadHappened;
 
     [SerializeField] private SpawnManager _spawnManager;
     [SerializeField] private UI_Manager _uiManager;
@@ -111,7 +112,7 @@ public class Player : MonoBehaviour
     
     void Update()
     {
-        if (_thrusterCount < 1)
+        if(_thrusterCount < 1)
         {
             CalculateMovement();
         }
@@ -121,16 +122,26 @@ public class Player : MonoBehaviour
             StartCoroutine(MaxThrusterCountCoolDown());
         }
 
-        if (_isMissileActive == false)
+        if(_ammoCount > 0)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (_isMissileActive == false)
             {
-                FireLaser();
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    FireLaser();
+                }
+            }
+            else if (_isMissileActive == true)
+            {
+                LaunchMissile();
             }
         }
-        else if (_isMissileActive == true)
+        
+        if(_ammoCount < 1 && _hasReloadHappened == false)
         {
-            LaunchMissile();
+            _hasReloadHappened = true;
+            _uiManager.ReloadingAmmo(true);
+            _spawnManager.ReloadPowerup();
         }
     }
 
@@ -189,17 +200,6 @@ public class Player : MonoBehaviour
         _laserOffsetPosition = new Vector3(transform.position.x, transform.position.y + 1.0f, 0);
         _nextFire = Time.time + _fireRate;
         
-        if (_ammoCount == 0)
-        {
-            _uiManager.ReloadingAmmo(true);
-            _spawnManager.ReloadPowerup();
-            return;
-        }
-        
-        if (_isMissileActive == true)
-        {
-            
-        }
         if ((Input.GetKey(KeyCode.Space)) && _isTripleShotActive)
         {
                 UpdateAmmoCount(1);
@@ -285,6 +285,7 @@ public class Player : MonoBehaviour
     {
         UpdateAmmoCount(-15);
         _uiManager.ReloadingAmmo(false);
+        _hasReloadHappened = false;
     }
     
     public void ChangeScore(int points)

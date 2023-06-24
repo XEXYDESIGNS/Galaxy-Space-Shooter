@@ -1655,6 +1655,7 @@ MonoBehaviour:
   _isSpeedActive: 0
   _isShieldsActive: 0
   _isMissileActive: 0
+  _hasReloadHappened: 0
   _spawnManager: {fileID: 1132950933}
   _uiManager: {fileID: 54423983}
   _rightEngine: {fileID: 1901810405}
@@ -1863,6 +1864,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyPrefab: {fileID: 8576155288389358749, guid: 406e0dd3e15fa5349841f36363ebb44b,
     type: 3}
+  _enemyBeamPrefab: {fileID: 8489979276973345187, guid: 9ddc6b59e6540524693de843f75048b1,
+    type: 3}
   _enemyContainer: {fileID: 498999396}
   _powerups:
   - {fileID: 4060457671547619522, guid: e002f62377ad3e642bd0a86fb7e53796, type: 3}
@@ -1872,7 +1875,6 @@ MonoBehaviour:
   - {fileID: 5523464628946909506, guid: f19ccf2103010b645b588284e6eda6a9, type: 3}
   - {fileID: 3106604400838773696, guid: 9309d5135ffb49644a1fb92e3172b9fe, type: 3}
   - {fileID: 6175017184620856674, guid: a76a256252bee69409e6bae6a6086bad, type: 3}
-  _isReloadAmmoActive: 0
   _enemyWaveCount: 0
   _uiManager: {fileID: 54423983}
 --- !u!4 &1132950934

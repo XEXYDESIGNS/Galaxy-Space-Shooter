@@ -7,7 +7,9 @@ using Random = UnityEngine.Random;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _enemyMovement = 4f;
-    private float _randomPos = Random.Range(-8f, 8f);
+    private float _randomPos;
+
+    private bool _enemyLaserActive;
 
     private Player _player;
     
@@ -15,12 +17,11 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private AudioSource _explosionSound;
     [SerializeField] private GameObject _enemyLasersPrefab;
-    
-    private Vector3[] _randomPosition;
-    
 
     private void Start()
     {
+        _randomPos = Random.Range(-8f, 8f);
+        
         _player = GameObject.Find("Player").GetComponent<Player>();
 
         if (_player == null)
@@ -61,6 +62,8 @@ public class Enemy : MonoBehaviour
             }
             _animator.SetTrigger("OnEnemyDeath");
             _enemyMovement = 0;
+            Destroy(GetComponent<Collider2D>());
+            _enemyLasersPrefab.SetActive(false);
             Destroy(gameObject, 2.8f);
             _explosionSound.Play();
         }
@@ -71,6 +74,7 @@ public class Enemy : MonoBehaviour
             _animator.SetTrigger("OnEnemyDeath");
             _enemyMovement = 0;
             Destroy(GetComponent<Collider2D>());
+            _enemyLasersPrefab.SetActive(false);
             Destroy(gameObject, 2.8f);
             _explosionSound.Play();
 
@@ -86,6 +90,7 @@ public class Enemy : MonoBehaviour
             _animator.SetTrigger("OnEnemyDeath");
             _enemyMovement = 0;
             Destroy(GetComponent<Collider2D>());
+            _enemyLasersPrefab.SetActive(false);
             Destroy(gameObject, 2.8f);
             _explosionSound.Play();
             if (_player != null)

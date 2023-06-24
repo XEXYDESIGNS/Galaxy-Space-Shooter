@@ -7,10 +7,11 @@ using Random = UnityEngine.Random;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private GameObject _enemyBeamPrefab;
     [SerializeField] private GameObject _enemyContainer;
+    
 
     [SerializeField] private GameObject[] _powerups;
-    [SerializeField] private bool _isReloadAmmoActive;
 
     private bool _stopSpawning = false;
 
@@ -31,11 +32,11 @@ public class SpawnManager : MonoBehaviour
     IEnumerator SpawnEnemyRoutineWave1()
     {
         yield return new WaitForSeconds(1.5f);
+        Vector3 _spawnPosition =  new Vector3(Random.Range(-8f, 8f), 6f, 0);
         while (_enemyWaveCount < 5)
         {
             _enemyWaveCount += 1;
-            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
-            GameObject newEnemy = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
+            GameObject newEnemy = Instantiate(_enemyPrefab, _spawnPosition, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
             _uiManager.UpdateEnemyWave(_enemyWaveCount, 5);
             _uiManager.UpdateWave(1);
@@ -49,12 +50,12 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnEnemyRoutineWave2()
     {
-        yield return new WaitForSeconds(1.5f);
-        while (_enemyWaveCount > 4 && _enemyWaveCount < 15)
+        yield return new WaitForSeconds(2.5f);
+        Vector3 _spawnPosition =  new Vector3(Random.Range(-8f, 8f), 6f, 0);
+        while (_enemyWaveCount < 15)
         {
             _enemyWaveCount += 1;
-            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
-            GameObject newEnemy = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
+            GameObject newEnemy = Instantiate(_enemyBeamPrefab, _spawnPosition, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
             _uiManager.UpdateEnemyWave(_enemyWaveCount - 5, 10);
             _uiManager.UpdateWave(2);
@@ -65,15 +66,29 @@ public class SpawnManager : MonoBehaviour
     IEnumerator SpawnPowerupRoutine()
     {
         yield return new WaitForSeconds(1.5f);
-        
-        Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
+        Vector3 _spawnPosition =  new Vector3(Random.Range(-8f, 8f), 6f, 0);
         while (_stopSpawning == false)
         {
-            int randomPowerup = Random.Range(0, 3);
-            Instantiate(_powerups[randomPowerup], spawnPosition, Quaternion.identity);
+            int randomPowerup = Random.Range(0, 2);
+            Instantiate(_powerups[randomPowerup], _spawnPosition, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(2, 8));
         }
     }
+
+    /*public void ActivateShieldPowerup()
+    {
+        StartCoroutine(ShieldPowerupRoutine());
+    }
+
+    IEnumerator ShieldPowerupRoutine()
+    {
+        yield return new WaitForSeconds(3.5f);
+        {
+            Instantiate(_powerups[3], _spawnPosition, Quaternion.identity);
+            yield return new WaitForSeconds(Random.Range(6, 8));
+        }
+    }
+    */
 
     public void ReloadPowerup()
     {
@@ -82,13 +97,9 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator ReloadPowerupRoutine()
     {
-        while (!_isReloadAmmoActive)
-        {
-            _isReloadAmmoActive = true;
-            yield return new WaitForSeconds(3.0f);
-            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
-            Instantiate(_powerups[3], spawnPosition, Quaternion.identity);
-        }
+        Vector3 _spawnPosition =  new Vector3(Random.Range(-8f, 8f), 6f, 0);
+        yield return new WaitForSeconds(3.0f);
+        Instantiate(_powerups[3], _spawnPosition, Quaternion.identity);
     }
 
     public void SpawnHealthPowerup()
@@ -98,31 +109,28 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnHealthPowerupRoutine()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(7.0f);
-            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
-            Instantiate(_powerups[4], spawnPosition, Quaternion.identity);
-        }
+        Vector3 _spawnPosition =  new Vector3(Random.Range(-8f, 8f), 6f, 0);
+        yield return new WaitForSeconds(7.0f);
+        Instantiate(_powerups[4], _spawnPosition, Quaternion.identity);
     }
 
     IEnumerator SpawnRarePowerupRoutine()
     {
+        Vector3 _spawnPosition =  new Vector3(Random.Range(-8f, 8f), 6f, 0);
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(35.0f, 45.0f));
-            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
-            Instantiate(_powerups[5], spawnPosition, Quaternion.identity);
+            Instantiate(_powerups[5], _spawnPosition, Quaternion.identity);
         }
     }
     
     IEnumerator SpawnDeathPowerupRoutine()
     {
+        Vector3 _spawnPosition =  new Vector3(Random.Range(-8f, 8f), 6f, 0);
         while (true)
         {
             yield return new WaitForSeconds(7.0f);
-            Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 6f, 0);
-            Instantiate(_powerups[6], spawnPosition, Quaternion.identity);
+            Instantiate(_powerups[6], _spawnPosition, Quaternion.identity);
         }
     }
     
