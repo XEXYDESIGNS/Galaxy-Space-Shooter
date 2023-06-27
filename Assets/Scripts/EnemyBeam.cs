@@ -8,8 +8,10 @@ public class EnemyBeam : MonoBehaviour
 {
     [SerializeField] private float _enemyMovement = 4f;
     private float _randomPos;
+    private Vector3 _startPosition;
 
-    private bool _enemyLaserActive;
+    private float _beamOffsetX;
+    private float _beamOffsetY;
 
     private Player _player;
     
@@ -20,7 +22,12 @@ public class EnemyBeam : MonoBehaviour
 
     private void Start()
     {
+        _beamOffsetX = 0.017f;
+        _beamOffsetY = -8.345f;
+        
         _randomPos = Random.Range(-8f, 8f);
+
+        _startPosition = transform.position;
         
         _player = GameObject.Find("Player").GetComponent<Player>();
 
@@ -42,6 +49,10 @@ public class EnemyBeam : MonoBehaviour
         {
             Debug.LogError("Explosion Audio Source is Null");
         }
+        
+        _animator.SetTrigger("StartMoving");
+
+        StartCoroutine(RandomFiringRoutine());
     }
 
     void Update()
@@ -111,4 +122,14 @@ public class EnemyBeam : MonoBehaviour
             transform.position = new Vector3(_randomPos, 6f, 0);
         }
     }
+
+    IEnumerator RandomFiringRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(2.0f, 4.0f));
+            Instantiate(_enemyBeamPrefab, new Vector3((transform.position.x + _beamOffsetX), (transform.position.y + _beamOffsetY), 0), Quaternion.identity);
+        }
+    }
+    
 }

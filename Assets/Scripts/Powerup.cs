@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Powerup : MonoBehaviour
 {
@@ -37,7 +38,14 @@ public class Powerup : MonoBehaviour
         
         if (transform.position.y < -4f)
         {
-            Destroy(gameObject);
+            if (powerupID == 3)
+            {
+                transform.position = new Vector3(Random.Range(-8.0f, 8.0f), 6f, 0);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
     private void OnTriggerEnter2D(Collider2D other)

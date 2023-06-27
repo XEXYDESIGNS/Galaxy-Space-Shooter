@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab;
-    [SerializeField] private GameObject _enemyBeamPrefab;
+    [SerializeField] private GameObject _enemyBeam;
     [SerializeField] private GameObject _enemyContainer;
     
 
@@ -36,7 +36,7 @@ public class SpawnManager : MonoBehaviour
         while (_enemyWaveCount < 5)
         {
             _enemyWaveCount += 1;
-            GameObject newEnemy = Instantiate(_enemyPrefab, _spawnPosition, Quaternion.identity);
+            GameObject newEnemy = Instantiate(_enemyBeam, _spawnPosition, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
             _uiManager.UpdateEnemyWave(_enemyWaveCount, 5);
             _uiManager.UpdateWave(1);
@@ -51,13 +51,13 @@ public class SpawnManager : MonoBehaviour
     IEnumerator SpawnEnemyRoutineWave2()
     {
         yield return new WaitForSeconds(2.5f);
-        Vector3 _spawnPosition =  new Vector3(Random.Range(-8f, 8f), 6f, 0);
-        while (_enemyWaveCount < 15)
+        Vector3 _spawnPosition =  new Vector3(Random.Range(-8f, 8f), 5.0f, 0);
+        while (_enemyWaveCount < 10)
         {
             _enemyWaveCount += 1;
-            GameObject newEnemy = Instantiate(_enemyBeamPrefab, _spawnPosition, Quaternion.identity);
+            GameObject newEnemy = Instantiate(_enemyPrefab, _spawnPosition, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
-            _uiManager.UpdateEnemyWave(_enemyWaveCount - 5, 10);
+            _uiManager.UpdateEnemyWave(_enemyWaveCount - 5, 5);
             _uiManager.UpdateWave(2);
             yield return new WaitForSeconds(4.0f);
         }

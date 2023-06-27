@@ -12,9 +12,8 @@ GameObject:
   - component: {fileID: 265675727113100391}
   - component: {fileID: 8632885496329815480}
   - component: {fileID: 8387774228215470779}
-  - component: {fileID: 1550153031876574670}
-  - component: {fileID: 8480720008341659079}
   - component: {fileID: -5341011363638316974}
+  - component: {fileID: 1486536191866722266}
   m_Layer: 0
   m_Name: Enemy_Beam
   m_TagString: Enemy
@@ -133,41 +132,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.2758987, y: 2.9170542}
   m_EdgeRadius: 0
---- !u!95 &1550153031876574670
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8489979276973345187}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f5a299f57e4bb2e41b29036db52fde9a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8480720008341659079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8489979276973345187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54c02977db4aaa8458531523a0d316bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _beamSound: {fileID: 0}
-  _explosionSound: {fileID: 0}
-  _enemyLaserBeam: {fileID: 4178684118250040850, guid: ce61e4d36b4927f419c4d84a52dc2cda,
-    type: 3}
 --- !u!114 &-5341011363638316974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,3 +148,22 @@ MonoBehaviour:
   _explosionSound: {fileID: 0}
   _enemyBeamPrefab: {fileID: 4178684118250040850, guid: ce61e4d36b4927f419c4d84a52dc2cda,
     type: 3}
+--- !u!95 &1486536191866722266
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8489979276973345187}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e387061851272604c8244286fb042e8f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

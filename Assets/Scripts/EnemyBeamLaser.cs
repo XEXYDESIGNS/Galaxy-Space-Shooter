@@ -7,25 +7,31 @@ public class EnemyBeamLaser : MonoBehaviour
 {
     [SerializeField] private AudioSource _beamSound;
     [SerializeField] private AudioSource _explosionSound;
-    [SerializeField] private GameObject _enemyLaserBeam;
-    
+
+    [SerializeField] private float _beamSpeed = 15f;
+
     private void Start()
     {
-        _beamSound = GameObject.Find("Explosion_Sound").GetComponent<AudioSource>();
+        _beamSound = GameObject.Find("Laser_Sound").GetComponent<AudioSource>();
 
         if (_beamSound == null)
         {
-            Debug.LogError("Explosion Audio Source is Null");
+            Debug.LogError("Laser Sound Audio Source is Null");
         }
+        
+        _explosionSound = GameObject.Find("Explosion_Sound").GetComponent<AudioSource>();
 
-        StartCoroutine(InitiateLaserBeamRoutine());
+        if (_explosionSound == null)
+        {
+            Debug.LogError("Explosion Sound Audio Source is Null");
+        }
     }
 
     private void Update()
     {
-        /*transform.Translate(Vector3.down * _laserSpeed * Time.deltaTime);
+        transform.Translate(Vector3.down * _beamSpeed * Time.deltaTime);
         
-        if (transform.position.y < -4f)
+        if (transform.position.y < -15f)
         {
             if (transform.parent == true)
             {
@@ -33,7 +39,7 @@ public class EnemyBeamLaser : MonoBehaviour
             }
             Destroy(this.gameObject);
         }
-        */
+        
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -46,19 +52,6 @@ public class EnemyBeamLaser : MonoBehaviour
                 other.transform.GetComponent<Player>().Damage();
                 _explosionSound.Play();
             }
-        }
-    }
-
-    IEnumerator InitiateLaserBeamRoutine()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(3.0f);
-            _enemyLaserBeam.SetActive(true);
-            _beamSound.Play();
-            yield return new WaitForSeconds(1.0f);
-            _enemyLaserBeam.SetActive(false);
-            yield return new WaitForSeconds(7.0f);
         }
     }
 }
