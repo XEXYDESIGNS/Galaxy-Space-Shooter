@@ -33,10 +33,10 @@ public class SpawnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
         Vector3 _spawnPosition =  new Vector3(Random.Range(-8f, 8f), 6f, 0);
-        while (_enemyWaveCount < 5)
+        while (_enemyWaveCount < 2)
         {
             _enemyWaveCount += 1;
-            GameObject newEnemy = Instantiate(_enemyBeam, _spawnPosition, Quaternion.identity);
+            GameObject newEnemy = Instantiate(_enemyPrefab, _spawnPosition, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
             _uiManager.UpdateEnemyWave(_enemyWaveCount, 5);
             _uiManager.UpdateWave(1);
@@ -55,7 +55,7 @@ public class SpawnManager : MonoBehaviour
         while (_enemyWaveCount < 10)
         {
             _enemyWaveCount += 1;
-            GameObject newEnemy = Instantiate(_enemyPrefab, _spawnPosition, Quaternion.identity);
+            GameObject newEnemy = Instantiate(_enemyBeam, _spawnPosition, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
             _uiManager.UpdateEnemyWave(_enemyWaveCount - 5, 5);
             _uiManager.UpdateWave(2);

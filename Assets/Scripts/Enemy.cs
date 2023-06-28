@@ -9,11 +9,16 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _enemyMovement = 4f;
     private float _randomPos;
 
+    [SerializeField] private float _shieldTime = 3.0f;
+
     private bool _enemyLaserActive;
 
     private Player _player;
     
     private Animator _animator;
+
+    [SerializeField] private GameObject _enemyShields;
+    private bool _isEnemyShieldActive;
 
     [SerializeField] private AudioSource _explosionSound;
     [SerializeField] private GameObject _enemyLasersPrefab;
@@ -42,8 +47,12 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("Explosion Audio Source is Null");
         }
+        
+        _enemyShields.SetActive(false);
+        _isEnemyShieldActive = false;
 
         StartCoroutine(RandomFiringTime());
+        StartCoroutine(EnemyShieldRoutine());
     }
 
     void Update()
@@ -55,46 +64,62 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("Player"))
-        {
-            if (other != null)
             {
-                other.transform.GetComponent<Player>().Damage();
+                if (_isEnemyShieldActive == true)
+                {
+                    _isEnemyShieldActive = false;
+                    return;
+                }
+                
+                if (other != null)
+                {
+                    other.transform.GetComponent<Player>().Damage();
+                }
+                _animator.SetTrigger("OnEnemyDeath");
+                _enemyMovement = 0;
+                Destroy(GetComponent<Collider2D>());
+                Destroy(gameObject, 1.5f);
+                _explosionSound.Play();
             }
-            _animator.SetTrigger("OnEnemyDeath");
-            _enemyMovement = 0;
-            Destroy(GetComponent<Collider2D>());
-            Destroy(gameObject, 1.5f);
-            _explosionSound.Play();
-        }
         
-        if (other.CompareTag("Laser"))
-        {
-            Destroy(other.gameObject);
-            _animator.SetTrigger("OnEnemyDeath");
-            _enemyMovement = 0;
-            Destroy(GetComponent<Collider2D>());
-            Destroy(gameObject, 1.5f);
-            _explosionSound.Play();
-
-            if (_player != null)
+            if (other.CompareTag("Laser"))
             {
-                _player.ChangeScore(Random.Range(4, 13));
-            }
-        }
+                if (_isEnemyShieldActive == true)
+                {
+                    _isEnemyShieldActive = false;
+                    return;
+                }
+                Destroy(other.gameObject);
+                _animator.SetTrigger("OnEnemyDeath");
+                _enemyMovement = 0;
+                Destroy(GetComponent<Collider2D>());
+                Destroy(gameObject, 1.5f);
+                _explosionSound.Play();
 
-        if (other.CompareTag("Missile"))
-        {
-            Destroy(other.gameObject);
-            _animator.SetTrigger("OnEnemyDeath");
-            _enemyMovement = 0;
-            Destroy(GetComponent<Collider2D>());
-            Destroy(gameObject, 1.5f);
-            _explosionSound.Play();
-            if (_player != null)
-            {
-                _player.ChangeScore(100);
+                if (_player != null)
+                {
+                    _player.ChangeScore(Random.Range(4, 13));
+                }
             }
-        }
+
+            if (other.CompareTag("Missile"))
+            {
+                if (_isEnemyShieldActive == true)
+                {
+                    _isEnemyShieldActive = false;
+                    return;
+                }
+                Destroy(other.gameObject);
+                _animator.SetTrigger("OnEnemyDeath");
+                _enemyMovement = 0;
+                Destroy(GetComponent<Collider2D>());
+                Destroy(gameObject, 1.5f);
+                _explosionSound.Play();
+                if (_player != null)
+                {
+                    _player.ChangeScore(100);
+                }
+            }
     }
 
     IEnumerator RandomFiringTime()
@@ -106,6 +131,19 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    IEnumerator EnemyShieldRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(3.0f);
+            _enemyShields.SetActive(true);
+            _isEnemyShieldActive = true;
+            yield return new WaitForSeconds(1.0f);
+            _enemyShields.SetActive(false);
+            _isEnemyShieldActive = false;
+        }
+    }
+    
     private void Boundaries()
     {
         if (transform.position.x > 8f)
