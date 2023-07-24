@@ -1663,6 +1663,7 @@ MonoBehaviour:
   _rightEngine: {fileID: 1901810405}
   _leftEngine: {fileID: 459773141}
   _explosionSound: {fileID: 892205192}
+  _currentXPos: 0
 --- !u!212 &970388900
 SpriteRenderer:
   m_ObjectHideFlags: 0

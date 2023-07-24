@@ -23,6 +23,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private AudioSource _explosionSound;
     [SerializeField] private GameObject _enemyLasersPrefab;
 
+    private float _playerXPos;
+
     private void Start()
     {
         _randomPos = Random.Range(-8f, 8f);
@@ -59,6 +61,7 @@ public class Enemy : MonoBehaviour
     {
         StartCoroutine(EnemyMovementRoutine());
         Boundaries();
+        RamItMethod();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -178,5 +181,20 @@ public class Enemy : MonoBehaviour
         transform.Translate(Vector3.left * _enemyMovement * Time.deltaTime);
         yield return new WaitForSeconds(5.0f);
         transform.Translate(Vector3.down * _enemyMovement * Time.deltaTime);
+    }
+
+    public void RamIt(float currentPlayerXPos)
+    {
+        _playerXPos = currentPlayerXPos;
+    }
+
+    private void RamItMethod()
+    {
+        float _fastSpeed = 8f;
+        
+        if (Mathf.Approximately(1.0f,(gameObject.transform.position.x / _playerXPos)))
+        {
+            transform.Translate(Vector3.down * _fastSpeed);
+        }
     }
 }

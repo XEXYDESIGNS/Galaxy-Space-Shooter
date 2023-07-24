@@ -33,7 +33,7 @@ public class SpawnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
         Vector3 _spawnPosition =  new Vector3(Random.Range(-8f, 8f), 6f, 0);
-        while (_enemyWaveCount < 2)
+        while (_enemyWaveCount < 5)
         {
             _enemyWaveCount += 1;
             GameObject newEnemy = Instantiate(_enemyPrefab, _spawnPosition, Quaternion.identity);

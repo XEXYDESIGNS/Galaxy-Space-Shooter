@@ -63,6 +63,8 @@ public class Player : MonoBehaviour
     
     private AudioSource _laserShot;
     [SerializeField] private AudioSource _explosionSound;
+
+    [SerializeField] private float _currentXPos; 
     
     
     void Start()
@@ -144,6 +146,8 @@ public class Player : MonoBehaviour
             _uiManager.ReloadingAmmo(true);
             _spawnManager.ReloadPowerup();
         }
+        
+        MyCurrentXPos();
     }
 
     void CalculateMovement()
@@ -334,6 +338,12 @@ public class Player : MonoBehaviour
     {
         _thrusterCount += 0.05f;
         _uiManager.ChangeThrusterSlider(_thrusterCount);
+    }
+
+    public void MyCurrentXPos()
+    {
+        _currentXPos = transform.position.x;
+        
     }
 
     IEnumerator MaxThrusterCountCoolDown()
